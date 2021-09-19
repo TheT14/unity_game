@@ -273,11 +273,12 @@ private void OnCollisionEnter(Collision other)
 
     void elimiate_self()
     {
-        GameObject r = GameObject.Find("Game");
+       Destroy(gameObject);
+       GameObject r = GameObject.Find("Game");
 
        r.GetComponent<GameS>().playerdied(gameObject.GetComponent<competitor>());
         
-        Destroy(gameObject);
+    
     }
 
 
