@@ -563,10 +563,13 @@ MonoBehaviour:
   mykills: {fileID: 8569597741743719987}
   kills: 0
   raycaster: {fileID: 2301647986109008597}
+  extra_raycaster1: {fileID: 0}
+  extra_raycaster2: {fileID: 0}
   testMovement: 0
   goal: {fileID: 0}
   my_name: hi
   follower: 0
+  in_storm: 0
 --- !u!195 &2996943573623795522
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -603,7 +606,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 84
   m_CollisionDetection: 0
 --- !u!65 &5690194648672178433
 BoxCollider:

@@ -22,12 +22,18 @@ public class competitor : MonoBehaviour
     public GameObject mykills;
     public float kills;
     public GameObject raycaster;
+    public GameObject extra_raycaster1;
+    public GameObject extra_raycaster2;
     public bool testMovement;
     private bool stoped;
     public Transform goal;
     public string my_name;   
     public bool follower;
     public bool in_storm;
+    float damage = 25;
+    float defense = 0;
+    float Regen_amount = 1;
+    bool extra_raycasts = true;
         void awake ()
     { /// code that runs on start of the progome Needs to be replaced with on awake
        setRandomloop();
@@ -70,7 +76,7 @@ void Update()
         }
         else if(hp_regen_timer >= 2 && hp <= 99)
         {
-            hp += 1;
+            hp += Regen_amount;
             hp_regen_timer = 0;
         }
 
@@ -153,13 +159,16 @@ void Updatee_rigidbody()
         raycast();
 
     }
-    void dash () {
+    void dash (GameObject other , Collider other2 ) 
+    {
         // picks a random ofset of trasform.foward and dashes at it
+        
         swich_to_rigidbody();
+        
         System.Random rnd = new System.Random();
         int bruh = rnd.Next(-20, 20);
         int bruh2 = rnd.Next(-20, 20);
-        Vector3 bad = Quaternion.Euler(bruh, 1, bruh2) * raycaster.transform.forward;
+        Vector3 bad = Quaternion.Euler(bruh, 1, bruh2) * other.transform.forward;
         gameObject.GetComponent<Rigidbody>().AddForce( bad * 30f, ForceMode.Impulse );
         Hitbox.enabled = true;
         start_nav_mesh_cowntdown = true;
@@ -184,10 +193,32 @@ void Updatee_rigidbody()
      {
         if(hit.collider.tag == "Player")
         {
-            dash();
+            dash(raycaster, hit.collider);
         }
-    }
-  
+     }
+     if(extra_raycasts && Physics.Raycast(extra_raycaster1.transform.position, extra_raycaster1.transform.forward, out hit, 5f))
+     {
+        Vector3 anana = (extra_raycaster1.transform.forward).normalized * 5f;
+            
+        Debug.DrawRay(extra_raycaster1.transform.position, anana, Color.red);
+        
+        if(hit.collider.tag == "Player")
+        {
+            
+            dash(extra_raycaster1, hit.collider);
+        }
+     }
+     if(extra_raycasts && Physics.Raycast(extra_raycaster2.transform.position, extra_raycaster2.transform.forward, out hit, 5f))
+     {
+        Vector3 nana = (extra_raycaster2.transform.forward).normalized * 5f;
+            
+        Debug.DrawRay(extra_raycaster2.transform.position, nana, Color.red);
+        
+        if(hit.collider.tag == "Player")
+        {
+            dash(extra_raycaster2, hit.collider);
+        }
+     }
      Vector3 banana = (raycaster.transform.forward).normalized * 5f;
             
      Debug.DrawRay(raycaster.transform.position, banana, Color.red);
@@ -229,11 +260,9 @@ private void OnCollisionEnter(Collision other)
     {
         if (other.collider.tag == "Player" && other.collider.GetComponent<competitor>().Dashing == true)
         {
-            if(other.transform.tag == "DamagePowerUp")
-            {
-                damageDecrease += 25;
-            }
-            hp -= damageDecrease;
+           
+            hp -= damage;
+            hp += defense;
             healthBar.size = hp / 100;
             if(hp <= 0)
             {
