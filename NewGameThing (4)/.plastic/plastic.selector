@@ -1,0 +1,4 @@
+repository "NewGameThing (4)@Kaboom7867@cloud"
+  path "/"
+    br "/main"
+    co "/main"
